@@ -55,3 +55,39 @@ isPalindrome xs = xs == myReverse xs
 --   Problem 7    --
 --------------------
 -- to be implemented
+
+--------------------
+--   Problem 8    --
+--------------------
+compress :: String -> String
+
+compress [] = []
+compress [x] = [x]
+compress (x:xs)
+		| x == head xs = compress xs
+		| otherwise = [x] ++ compress xs
+
+compress' :: Eq a => [a] -> [a]
+
+compress' [] = []
+compress' [x] = [x]
+compress' (x:xs)
+		| x == head xs = compress' xs
+		| otherwise = [x] ++ compress' xs
+
+--------------------
+--   Problem 9    --
+--------------------
+pack :: Eq a => [a] -> [[a]]
+
+pack []     = []
+pack [x]    = [x:[]]
+pack (x:y:zs)
+	   | x == y = [x:y:[]] ++ pack zs
+	   | otherwise = [x:[]] ++ [y:[]] ++ pack zs
+-- this one is wrongly implemented, must correct it
+
+--------------------
+--  Problem 10    --
+--------------------
+-- to be implemented

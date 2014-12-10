@@ -54,8 +54,12 @@ isPalindrome xs = xs == myReverse xs
 --------------------
 --   Problem 7    --
 --------------------
--- to be implemented
+data NestedList a = Elem a | List [NestedList a]
 
+myFlatten :: NestedList a -> [a]
+myFlatten (Elem a) = [a]
+myFlatten (List (x:xs)) = myFlatten x ++ myFlatten (List xs)
+myFlatten (List []) = []
 --------------------
 --   Problem 8    --
 --------------------
@@ -78,14 +82,30 @@ compress' (x:xs)
 --------------------
 --   Problem 9    --
 --------------------
+separate :: [a] -> [[a]]
+
+separate xs = [[x] | x <- xs]
+
+
 pack :: Eq a => [a] -> [[a]]
 
-pack []     = []
-pack [x]    = [x:[]]
-pack (x:y:zs)
-	   | x == y = [x:y:[]] ++ pack zs
-	   | otherwise = [x:[]] ++ [y:[]] ++ pack zs
--- this one is wrongly implemented, must correct it
+pack = undefined
+--pack []     = []
+--pack [x]    = [[x]]
+----pack (x:y:zs)
+----	   | x == y = [x:y:[]] ++ pack zs
+----	   | otherwise = [x:[]] ++ [y:[]] ++ pack zs
+---- this one is wrongly implemented, must correct it
+
+----pack (x:xs)
+----	   | x == head xs = [[x] ++ [head xs]] ++ pack xs
+----	   | otherwise = [[x]] ++ pack xs
+
+--pack (x:xs)
+--	   | y == head ys = y ++ head (pack (head ys))
+--	   | otherwise = y ++ head $ pack (head ys)
+--	   
+--	   	where (y:ys) = separate (x:xs)
 
 --------------------
 --  Problem 10    --

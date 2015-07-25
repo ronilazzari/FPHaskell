@@ -82,32 +82,22 @@ compress' (x:xs)
 --------------------
 --   Problem 9    --
 --------------------
-separate :: [a] -> [[a]]
+pack' :: Eq a => [a] -> [[a]] -> [[a]]
 
-separate xs = [[x] | x <- xs]
-
+pack' xs ys
+	     | xs == [] = ys
+	     | otherwise  = pack' xs' ys'
+	     	where
+	     	     xs' = dropWhile ((==) (head xs)) xs
+		     ys' = (ys ++ [(takeWhile ((==) (head xs)) xs)])
 
 pack :: Eq a => [a] -> [[a]]
 
-pack = undefined
---pack []     = []
---pack [x]    = [[x]]
-----pack (x:y:zs)
-----	   | x == y = [x:y:[]] ++ pack zs
-----	   | otherwise = [x:[]] ++ [y:[]] ++ pack zs
----- this one is wrongly implemented, must correct it
-
-----pack (x:xs)
-----	   | x == head xs = [[x] ++ [head xs]] ++ pack xs
-----	   | otherwise = [[x]] ++ pack xs
-
---pack (x:xs)
---	   | y == head ys = y ++ head (pack (head ys))
---	   | otherwise = y ++ head $ pack (head ys)
---	   
---	   	where (y:ys) = separate (x:xs)
+pack xs = pack' xs []
 
 --------------------
 --  Problem 10    --
 --------------------
--- to be implemented
+encode :: Eq a => [a] -> [(Int, a)]
+
+encode xs = [((length x), (head x)) | x <- (pack xs)]

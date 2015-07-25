@@ -1,10 +1,56 @@
 --------------------
+--   Problem 9    --
+--------------------
+pack' :: Eq a => [a] -> [[a]] -> [[a]]
+
+pack' xs ys
+	     | xs == [] = ys
+	     | otherwise  = pack' xs' ys'
+	     	where
+	     	     xs' = dropWhile ((==) (head xs)) xs
+		     ys' = (ys ++ [(takeWhile ((==) (head xs)) xs)])
+
+pack :: Eq a => [a] -> [[a]]
+
+pack xs = pack' xs []
+
+--------------------
+--  Problem 10    --
+--------------------
+encode :: Eq a => [a] -> [(Int, a)]
+
+encode xs = [((length x), (head x)) | x <- (pack xs)]
+
+--------------------
 --  Problem 11    --
 --------------------
+data RunLengthEncoding = Multiple Int Char | Single Char
+					deriving (Eq,Show)
+
+encodeModified :: [Char] -> [RunLengthEncoding]
+
+encodeModified xs = [if (fst x) == 1 then (Single (snd x)) else (Multiple (fst x) (snd x)) | x <- (encode xs)]
 
 --------------------
 --  Problem 12    --
 --------------------
+decode :: RunLengthEncoding -> [Char]
+
+decode (Single x) = repli 1 x
+decode (Multiple number character) = repli number character
+
+decodeModified' :: [RunLengthEncoding] -> [Char] -> [Char]
+
+decodeModified' xs ys
+		      | xs == []  = ys
+		      | otherwise = decodeModified' xs' ys'
+		      	where
+		      		xs' = tail xs
+		      		ys' = ys ++ (decode (head xs))
+
+decodeModified :: [RunLengthEncoding] -> [Char]
+
+decodeModified xs = decodeModified' xs []
 
 --------------------
 --  Problem 13    --

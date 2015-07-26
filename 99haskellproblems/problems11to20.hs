@@ -55,7 +55,36 @@ decodeModified xs = decodeModified' xs []
 --------------------
 --  Problem 13    --
 --------------------
+code :: (Int, Char) -> RunLengthEncoding
 
+code (1, y) = Single y
+code (x, y) = Multiple x y
+
+simplify' :: [(Int, Char)] -> [RunLengthEncoding] -> [RunLengthEncoding]
+
+simplify' xs ys
+		| xs == []  = ys
+		| otherwise = simplify' xs' ys'
+			where
+				xs' = tail xs
+				ys' = ys ++ [code (head xs)]
+
+simplify :: [(Int, Char)] -> [RunLengthEncoding]
+
+simplify xs = simplify' xs []
+
+encodeDirect' :: [Char] -> [(Int, Char)] -> [(Int, Char)]
+
+encodeDirect' xs ys
+		    | xs == []  = ys
+		    | otherwise = encodeDirect' xs' ys'
+		    	where
+		    		xs' = dropWhile ((==) (head xs)) xs
+		    		ys' = ys ++ [((length (takeWhile ((==) (head xs)) xs)),(head xs))]
+
+encodeDirect :: [Char] -> [RunLengthEncoding]
+
+encodeDirect xs = simplify (encodeDirect' xs [])
 --------------------
 --  Problem 14    --
 --------------------
@@ -93,10 +122,25 @@ dropEvery n (x:xs)
 --------------------
 --  Problem 17    --
 --------------------
+split' :: [Char] -> Int -> [Char] -> ([Char], [Char])
+
+split' xs number ys
+		    | (length xs) == number = (xs,ys)
+		    | otherwise = split' xs' number ys'
+		    	where
+		    		xs' = init xs
+		    		ys' = (last xs):ys
+
+split :: [Char] -> Int -> ([Char],[Char])
+
+split xs number = split' xs number []
 
 --------------------
 --  Problem 18    --
 --------------------
+slice :: [Char]-> Int -> Int -> [Char]
+
+slice xs firstIndex secondIndex = drop (firstIndex - 1) (take (secondIndex) xs)
 
 --------------------
 --  Problem 19    --

@@ -94,6 +94,19 @@ duplicate [] = []
 
 duplicate (x:xs) = x:x:(duplicate xs)
 
+privateDuplicate :: [Char] -> [Char] -> [Char]
+
+privateDuplicate xs ys
+			| xs == []  = ys
+			| otherwise = privateDuplicate xs' ys'
+				where
+					xs' = tail xs
+					ys' = ys ++ [head xs] ++ [head xs]
+
+publicDuplicate :: [Char] -> [Char]
+
+publicDuplicate xs = privateDuplicate xs []
+
 --------------------
 --  Problem 15    --
 --------------------
@@ -107,7 +120,6 @@ replicate' :: Int -> [a] -> [a]
 
 replicate' _ [] = []
 replicate' n (x:xs) = repli n x ++ replicate' n xs
-
 --------------------
 --  Problem 16    --
 --------------------
